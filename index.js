@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import {
   Text,
   FlatList,
-  TextInput,
   View,
   TouchableOpacity,
   Keyboard
 } from 'react-native';
+import { Item, Label, Input, Icon } from 'native-base';
+import { INPUT_ORANGE, INPUT_TEXT, LIGHT_GRAY, INPUT_ICON } from '../../src/utils/colors';
+import { inputDefaultStyle } from '../../src/components/_TextInput';
 
 const defaultItemValue = {
   name: '', id: 0
@@ -128,6 +130,7 @@ export default class SearchableDropDown extends Component {
             this.setState({ item: item, focus: false });
             Keyboard.dismiss();
             setTimeout(() => {
+              console.log('hereeeee inside', item)
               this.props.onItemSelect(item);
               if (this.props.resetValue) {
                 this.setState({ focus: true, item: defaultItemValue });
@@ -206,10 +209,28 @@ export default class SearchableDropDown extends Component {
         }
       }
     });
+    const {defaultItem, defaultLabel, defaultInput} = inputDefaultStyle;
+    const {focus} = this.state;
+    const {
+      itemStyle,
+      labelStyle,
+      placeholder,
+      inputStyle,
+      editable,
+      rightIcon,
+      rightIconType,
+      rightIconColor
+    } = textInputProps;
+
     return (
-      <TextInput
-       { ...textInputProps }
-      />
+      <Item floatingLabel style={[defaultItem, itemStyle, {height:46,  borderBottomWidth: focus ? 2 : undefined, borderBottomColor: focus ? INPUT_ORANGE : undefined, marginLeft:-2 }]}>
+        <Label style={[defaultLabel, labelStyle]}> {placeholder}</Label>
+        <Input
+          { ...textInputProps }
+          style={[defaultInput, inputStyle, {color: ! editable ?  LIGHT_GRAY : INPUT_TEXT}]}
+        />
+        <Icon style = {{color: rightIconColor}} name={rightIcon} type = {rightIconType} />
+      </Item>
     )
   }
 
