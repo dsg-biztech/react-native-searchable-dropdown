@@ -74,7 +74,7 @@ export default class SearchableDropDown extends Component {
     let setSort = this.props.setSort;
     if (!setSort && typeof setSort !== 'function') {
         setSort = (item, searchedText) => { 
-          return item.name.toLowerCase().indexOf(searchedText.toLowerCase()) > -1
+          return item[this.props.displayKey].toLowerCase().indexOf(searchedText.toLowerCase()) > -1
         };
     }
     var ac = this.props.items.filter((item) => {
@@ -82,7 +82,7 @@ export default class SearchableDropDown extends Component {
     });
     let item = {
       id: -1,
-      name: searchedText
+      [this.props.displayKey]: searchedText
     };
     this.setState({ listItems: ac, item: item });
     const onTextChange = this.props.onTextChange || this.props.textInputProps.onTextChange || this.props.onChangeText || this.props.textInputProps.onChangeText;
@@ -100,7 +100,7 @@ export default class SearchableDropDown extends Component {
           ? 
           <TouchableOpacity style={{ ...this.props.itemStyle, flex: 1, flexDirection: 'row' }}>
             <View style={{ flex: 0.9, flexDirection: 'row', alignItems: 'flex-start' }}>
-              <Text>{ item.name }</Text>
+              <Text>{ item[this.props.displayKey] }</Text>
             </View>
             <View style={{ flex: 0.1, flexDirection: 'row', alignItems: 'flex-end' }}>
               <TouchableOpacity onPress={() => setTimeout(() => { this.props.onRemoveItem(item, index) }, 0) } style={{ backgroundColor: '#f16d6b', alignItems: 'center', justifyContent: 'center', width: 25, height: 25, borderRadius: 100, marginLeft: 10}}>
@@ -118,7 +118,7 @@ export default class SearchableDropDown extends Component {
           }}
           style={{ ...this.props.itemStyle, flex: 1, flexDirection: 'row' }}>
             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-start' }}>
-              <Text>{ item.name }</Text>
+              <Text>{ item[this.props.displayKey] }</Text>
             </View>
           </TouchableOpacity>
       )
@@ -142,9 +142,9 @@ export default class SearchableDropDown extends Component {
           { 
             this.props.selectedItems && this.props.selectedItems.length > 0 && this.props.selectedItems.find(x => x.id === item.id) 
             ?
-              <Text style={{ ...this.props.itemTextStyle }}>{item.name}</Text>
+              <Text style={{ ...this.props.itemTextStyle }}>{item[this.props.displayKey]}</Text>
             :
-              <Text style={{ ...this.props.itemTextStyle }}>{item.name}</Text>
+              <Text style={{ ...this.props.itemTextStyle }}>{item[this.props.displayKey]}</Text>
           }
         </TouchableOpacity>
       );
@@ -181,7 +181,7 @@ export default class SearchableDropDown extends Component {
       },
       {
         key: 'value',
-        val: this.state.item.name
+        val: this.state.item[this.props.displayKey]
       },
       {
         key: 'style',
@@ -253,7 +253,7 @@ export default class SearchableDropDown extends Component {
                  { items.map((item, index) => {
                      return (
                          <View key={index} style={{
-                                 width: (item.name.length * 8) + 60,
+                                 width: (item[this.props.displayKey].length * 8) + 60,
                                  justifyContent: 'center',
                                  flex: 0,
                                  backgroundColor: '#eee',
@@ -263,7 +263,7 @@ export default class SearchableDropDown extends Component {
                                  padding: 8,
                                  borderRadius: 15,
                              }}>
-                             <Text style={{ color: '#555' }}>{item.name}</Text>
+                             <Text style={{ color: '#555' }}>{item[this.props.displayKey]}</Text>
                              <TouchableOpacity onPress={() => setTimeout(() => { this.props.onRemoveItem(item, index) }, 0) } style={{ backgroundColor: '#f16d6b', alignItems: 'center', justifyContent: 'center', width: 25, height: 25, borderRadius: 100, marginLeft: 10}}>
                                  <Text>X</Text>
                              </TouchableOpacity>
